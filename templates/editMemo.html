@@ -177,14 +177,6 @@
         <!--&#9776 햄버거 메뉴-->
         <div class="brand_logo"><a href="#"><img src="./Logo.png" alt="Byte the Blues"></a></div>
         <span class="hamburger_logo" onclick="openNav()">&#9776;</span>
-        <div class="menu">
-            <a href="/logout">로그아웃</a>
-            <a href="/home">홈으로</a>
-            <a href="#">마이페이지</a>
-            <a href="#">AI다이어리</a>
-            <a href="#">메모</a>
-            <a href="#">P Test</a>
-        </div>
     </div>
     
     <!--가로 600px미만-->
@@ -214,5 +206,14 @@
             </div>
         </form>
     </div>
+    <script>
+        function openNav() {
+            document.getElementById("sidebar").style.width = "200px";
+        }
+
+        function closeNav() {
+            document.getElementById("sidebar").style.width = "0";
+        }
+    </script>
 </body>
 </html>
