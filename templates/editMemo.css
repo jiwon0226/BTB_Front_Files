@@ -7,7 +7,7 @@
 
 body {
     /* 배경 이미지 */
-    background-image: url('../bg_picture.webp');
+    /* background-image: url('../bg_picture.webp');
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh;
@@ -16,7 +16,17 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0;
-    font-family: 'TmonMonsori';
+    font-family: 'TmonMonsori'; */
+    background-image: url('./background.png');
+    background-size: cover; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color:aliceblue;
+    font-family: 'Arial', sans-serif;
 }
 
 .edit_memo_padding {

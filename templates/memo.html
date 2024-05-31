@@ -46,7 +46,7 @@
             margin-bottom: 15px;
         }
 
-        textarea {
+        textarea, input[type="time"], input[type="text"], input[type="number"] {
             width: 100%;
             padding: 10px;
             font-size: 16px;
@@ -71,29 +71,66 @@
     <span>Byte The Bive</span>
 </nav>
 <div class="container">
-    <!-- Add New Memo Form -->
-    <h2>Add New Memo</h2>
-    <form action="/memo/memo/save" method="post">
+    <h2>오늘의 메모</h2>
+    <form th:action="@{/memo/memo/saveAll}" method="post">
         <input type="hidden" name="date" th:value="${date}">
-        <div class="form-group">
-            <label for="content">Add New Memo</label>
-            <textarea id="content" name="content" rows="3"></textarea>
-        </div>
-        <input class="button" type="submit" value="Save">
-    </form>
 
-    <!-- Existing Memos -->
-    <h2>Existing Memos for <span th:text="${date}"></span></h2>
-    <ul>
-        <li th:each="memo : ${memos}">
-            <span th:text="${memo.content}"></span>
-            <a th:href="@{/memo/memo/edit/{id}(id=${memo.id})}">Edit</a> <!-- 수정 버튼 추가 -->
-        </li>
-    </ul>
+        <!-- Memo Section -->
+        <h3>Memo</h3>
+        <input type="hidden" name="id" th:value="${memos.size() > 0 ? memos[0].id : ''}">
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="10" cols="50" th:text="${memos.size() > 0 ? memos[0].content : ''}"></textarea>
+        </div>
+
+        <!-- Sleep Section -->
+        <h3>Sleep Time</h3>
+        <div class="form-group">
+            <label for="start">Start Time (hh:mm)</label>
+            <input type="time" id="start" name="start" th:value="${sleeps.size() > 0 ? sleeps[0].start : ''}">
+        </div>
+        <div class="form-group">
+            <label for="end">End Time (hh:mm)</label>
+            <input type="time" id="end" name="end" th:value="${sleeps.size() > 0 ? sleeps[0].end : ''}">
+        </div>
+
+        <!-- Meal Section -->
+        <h3>식사</h3>
+        <div class="form-group toggle-btn">
+            <label>
+                <input type="radio" name="mealType" value="Breakfast" th:checked="${meals.size() > 0 && meals[0].mealType == 'Breakfast'}"> 아침
+            </label>
+            <label>
+                <input type="radio" name="mealType" value="Lunch" th:checked="${meals.size() > 0 && meals[0].mealType == 'Lunch'}"> 점심
+            </label>
+            <label>
+                <input type="radio" name="mealType" value="Dinner" th:checked="${meals.size() > 0 && meals[0].mealType == 'Dinner'}"> 저녁
+            </label>
+            <label>
+                <input type="radio" name="mealType" value="Snack" th:checked="${meals.size() > 0 && meals[0].mealType == 'Snack'}"> 간식
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="mealTime">시간</label>
+            <input type="time" id="mealTime" name="mealTime">
+        </div>
+        <div class="form-group">
+            <label for="mealMenus">메뉴 (쉼표로 구분)</label>
+            <input type="text" id="mealMenus" name="mealMenus">
+        </div>
+        <div class="form-group">
+            <label for="mealRating">평점</label>
+            <input type="number" id="mealRating" name="mealRating" min="1" max="5">
+        </div>
+
+
+
+        <input class="button" type="submit" value="Save Changes">
+    </form>
 </div>
 <footer>
-    <a href="/" class="button">Home</a>
-    <a href="/mypage" class="button">Mypage</a>
+    <span>© 2024 Byte The Bive</span>
 </footer>
 </body>
 </html>
