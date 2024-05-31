@@ -35,6 +35,104 @@
         font-family: 'Arial', sans-serif;
     }
 
+    /*나브바_햄버거 버전*/
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed; /*스크롤을 내려도 header는 따라옴*/
+        top: 0;
+        width: 100%;
+        padding: 15px 20px; 
+        box-sizing: border-box;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가로 입체감 부여 */
+        height: 60px;
+        z-index: 1000; /* 다른 요소보다 항상 위에 보이도록 설정 */
+    }
+
+    .brand_logo img{
+        height: 50px;
+    }
+
+    .menu {
+        font-size: 15px;
+        display: flex;
+        gap: 15px;
+    }
+    .menu a {
+        text-decoration: none;
+        color: #007BFF; 
+        font-weight: bold; 
+        transition: color 0.3s transform 0.3s; 
+    }
+    .menu a:hover {
+        color: #0056b3;
+        transform: translateY(-2px); 
+    }
+
+    .hamburger_logo {
+        display: none;
+        font-size: 30px;
+        cursor: pointer;
+        color: #007BFF;
+    }
+
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        z-index: 1000;
+    }
+    .sidebar a {
+        padding: 8px;
+        padding-left: 32px;
+        text-decoration: none;
+        font-size: 20px;
+        color: #007BFF;
+        display: block;
+        transition: 0.3s;
+        transition: color 0.3s transform 0.3s; 
+    }
+    .sidebar a:hover {
+        /* background-color: rgb(255, 177, 32); */
+        border-bottom: white solid 3px;
+        transition: 0s;
+        color: #0056b3;
+        transform: translateY(-2px); 
+    }
+
+    .sidebar .closebtn:hover {
+        background: none;
+        border-bottom: none;
+        transition: 0s;
+    }
+
+    .sidebar .closebtn {
+        position: absolute;
+        top: 10px;
+        padding: 0;
+        left: 10px;
+        font-size: 36px;
+    }
+    @media screen and (max-width: 600px) {
+        .menu {
+            display: none;
+        }
+        .hamburger_logo {
+            display: block;
+        }
+    } 
+    /**/
     .edit_memo_padding {
         background-color: white;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -67,24 +165,73 @@
         padding-top: 20px;
     }
 
+    button {
+        padding: 15px 30px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #88c5f7, #6ebef7);
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        min-width: 200px;
+        box-sizing: border-box;
+    }
+
+    button:hover {
+        transform: translateY(-2px); /* 호버 시 살짝 위로 이동 */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 추가 */
+    }
+
+    label {
+        align-self: flex-start;
+        margin-left: 9%;
+    }
+
     </style>
 </head>
 <body>
-<div class="edit_memo_padding">
-    <h1>Edit Memo</h1>
-<!-- 기존 메모 내용을 입력 폼에 채워 표시 -->
-    <form th:action="@{/memo/update}" th:object="${memo}" method="post">
-        <!-- 메모 ID를 숨긴 필드로 전달 -->
-        <input type="hidden" th:field="*{id}" />
-        <div>
-            <label for="content">Content:</label>
-            <!-- textarea에 기존 콘텐츠를 미리 채워 넣음 -->
-            <textarea id="content" th:field="*{content}" rows="10" cols="50"></textarea>
+    <div class="navbar">
+        <!--&#9776 햄버거 메뉴-->
+        <div class="brand_logo"><a href="#"><img src="./Logo.png" alt="Byte the Blues"></a></div>
+        <span class="hamburger_logo" onclick="openNav()">&#9776;</span>
+        <div class="menu">
+            <a href="/logout">로그아웃</a>
+            <a href="/home">홈으로</a>
+            <a href="#">마이페이지</a>
+            <a href="#">AI다이어리</a>
+            <a href="#">메모</a>
+            <a href="#">P Test</a>
         </div>
-        <div>
-            <button type="submit">Save Changes</button>
-        </div>
-    </form>
-</div>
+    </div>
+    
+    <!--가로 600px미만-->
+    <div id="sidebar" class="sidebar">
+        <!--&times 닫기 버튼-->
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/logout">로그아웃</a>
+        <a href="/home">홈으로</a>
+        <a href="#">마이페이지</a>
+        <a href="#">AI다이어리</a>
+        <a href="#">메모</a>
+        <a href="#">P Test</a>
+    </div>
+    <div class="edit_memo_padding">
+        <h1>Edit Memo</h1>
+    <!-- 기존 메모 내용을 입력 폼에 채워 표시 -->
+        <form th:action="@{/memo/update}" th:object="${memo}" method="post">
+            <!-- 메모 ID를 숨긴 필드로 전달 -->
+            <input type="hidden" th:field="*{id}" />
+            <div>
+                <label for="content">Content:</label>
+                <!-- textarea에 기존 콘텐츠를 미리 채워 넣음 -->
+                <textarea id="content" th:field="*{content}" rows="10" cols="50"></textarea>
+            </div>
+            <div>
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
